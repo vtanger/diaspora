@@ -29,12 +29,16 @@ describe Photo do
   describe "protected attributes" do
     it "doesn't allow mass assignment of person" do
       @photo.save!
-      @photo.update_attributes(:author => Factory(:person))
+      expect {
+        @photo.update_attributes(:author => Factory(:person))
+      }.should raise_error ActiveModel::MassAssignmentSecurity::Error
       @photo.reload.author.should == @user.person
     end
     it "doesn't allow mass assignment of person_id" do
       @photo.save!
-      @photo.update_attributes(:author_id => Factory(:person).id)
+      expect {
+        @photo.update_attributes(:author_id => Factory(:person).id)
+      }.should raise_error ActiveModel::MassAssignmentSecurity::Error
       @photo.reload.author.should == @user.person
     end
     it 'allows assignment of text' do
